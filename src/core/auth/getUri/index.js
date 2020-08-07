@@ -1,0 +1,1 @@
+export { getUri } from './getUri'
