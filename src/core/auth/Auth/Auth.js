@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { authenticate, unauthenticate, setAccessToken } from '../../../redux'
-import { useSafeState } from '../../hooks'
 import { validateToken } from '../validateToken'
 
 const TOKEN_KEY = 'access_token'
@@ -29,11 +28,9 @@ const Auth = ({ children }) => {
       const tokenValid = await validateToken(accessToken)
 
       if (tokenValid) {
-        console.log('token valid')
         localStorage.setItem(TOKEN_KEY, accessToken)
         mounted && dispatch(authenticate())
       } else {
-        console.log('token invalid')
         localStorage.removeItem(TOKEN_KEY)
         mounted && dispatch(unauthenticate())
       }
@@ -54,7 +51,7 @@ const Auth = ({ children }) => {
     }
 
     return () => mounted = false
-  }, [authenticated])
+  }, [authenticated, history])
 
   return (
     <>{children}</>
