@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom'
@@ -9,48 +9,46 @@ const TOKEN_KEY = 'access_token'
 const { localStorage } = window
 
 const Auth = ({ children }) => {
+  const mounted = useRef(false)
   const dispatch = useDispatch()
   const history = useHistory()
   const accessToken = useSelector(state => state.auth.accessToken)
   const authenticated = useSelector(state => state.auth.authenticated)
 
   useEffect(() => {
+    mounted.current = true
+    return () => {
+      mounted.current = false
+    }
+  })
+
+  useEffect(() => {
     const storedAccessToken = localStorage.getItem(TOKEN_KEY)
-    if (storedAccessToken) {
+    if (storedAccessToken && mounted.current) {
       dispatch(setAccessToken(localStorage.getItem(TOKEN_KEY)))
     }
   }, [dispatch])
 
   useEffect(() => {
-    let mounted = true
-
     const checkAuthentication = async () => {
       const tokenValid = await validateToken(accessToken)
 
       if (tokenValid) {
         localStorage.setItem(TOKEN_KEY, accessToken)
-        mounted && dispatch(authenticate())
+        mounted.current && dispatch(authenticate())
       } else {
         localStorage.removeItem(TOKEN_KEY)
-        mounted && dispatch(unauthenticate())
+        mounted.current && dispatch(unauthenticate())
       }
     }
 
     checkAuthentication()
-
-    return () => {
-      mounted = false
-    }
   }, [accessToken, dispatch])
 
   useEffect(() => {
-    let mounted = true
-
-    if (mounted && !!authenticate) {
+    if (mounted.current && !!authenticated) {
       history.push('/')
     }
-
-    return () => mounted = false
   }, [authenticated, history])
 
   return (

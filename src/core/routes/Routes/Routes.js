@@ -8,7 +8,7 @@ const Routes = () => {
 
   return (
     <>
-      { authenticated ? <PrivateRoutes /> : <PublicRoutes />}
+      { !!authenticated ? <PrivateRoutes /> : <PublicRoutes />}
     </>
   );
 };

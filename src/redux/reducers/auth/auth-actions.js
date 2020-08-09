@@ -2,7 +2,7 @@ export const AUTHENTICATE = 'AUTHENTICATE'
 export const UNAUTHENTICATE = 'UNAUTHENTICATE'
 export const SET_TOKEN = 'SET_TOKEN'
 
-export function authenticate(accessToken) {
+export function authenticate() {
   return {
     type: AUTHENTICATE,
     payload: {
@@ -11,7 +11,7 @@ export function authenticate(accessToken) {
   }
 }
 
-export function unauthenticate(accessToken) {
+export function unauthenticate() {
   return {
     type: UNAUTHENTICATE,
     payload: {
