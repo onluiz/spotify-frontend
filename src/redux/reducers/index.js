@@ -7,11 +7,23 @@ import {
   setAccessToken
 } from './auth'
 
-const combinedReducers = combineReducers({ auth });
+import {
+  initialState as playlistInitialState,
+  reducer as playlist,
+} from './playlist'
+
+const combinedReducers = combineReducers({
+  auth,
+  playlist,
+});
+
 const initialState = {
   auth: {
     ...authInitialState
   },
+  playlist: {
+    ...playlistInitialState
+  }
 }
 
 export {

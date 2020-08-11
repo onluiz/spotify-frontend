@@ -8,13 +8,26 @@ i18n
       pt: {
         translation: {
           header: {
-            title: 'Spotify Frontend',
-            signOut: 'Sign Out',
+            title: 'Spotifood',
+            signOut: 'Sair',
           },
           login: {
-            btnContinue: 'Click here to continue',
+            btnContinue: 'Clique aqui para continuar',
           },
-          "Welcome to React": "Welcome to React and react-i18next"
+          home: {
+            filters: {
+              pending: 'Carregando filtros',
+              error: 'Não foi possível carregar os filtros',
+            }
+          },
+          filters: {
+            locale: {
+              name: 'Locale'
+            },
+            minmax: {
+              empty: 'Selecione um item'
+            }
+          }
         }
       }
     },

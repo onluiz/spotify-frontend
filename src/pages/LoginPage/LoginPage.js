@@ -17,8 +17,6 @@ const LoginPage = () => {
   const uri = getAuthUri()
   const classes = useStyles()
 
-  console.log(t('login.btnContinue'))
-
   return (
     <Grid
       container

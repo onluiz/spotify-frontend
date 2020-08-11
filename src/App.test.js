@@ -6,6 +6,6 @@ afterEach(cleanup)
 
 test('renders learn react link', () => {
   const { getByText } = render(<App />);
-  const linkElement = getByText(/Auth/i);
+  const linkElement = getByText(/header.title/i);
   expect(linkElement).toBeInTheDocument();
 });

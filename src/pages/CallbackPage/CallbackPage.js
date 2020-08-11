@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { parse } from 'query-string'
-import { SplashScreen } from '../../components'
 import { setAccessToken } from '../../redux'
 
 const CallbackPage = () => {
@@ -14,7 +13,7 @@ const CallbackPage = () => {
     dispatch(setAccessToken(params.access_token))
   }, [dispatch, params.access_token])
 
-  return <><SplashScreen /></>;
+  return <></>;
 }
 
 export { CallbackPage }
