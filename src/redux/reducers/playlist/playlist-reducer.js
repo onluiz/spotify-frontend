@@ -4,6 +4,7 @@ import {
   SET_FILTER,
   SET_TIMESTAMP,
   SET_LIMIT,
+  SET_OFFSET,
 } from './playlist-actions'
 
 export const initialState = {
@@ -12,8 +13,9 @@ export const initialState = {
     locale: 'pt_BR',
     country: 'BR',
     timestamp: new Date().toISOString(),
-    limit: 20,
+    limit: 5,
     offset: 0,
+    page: 1,
   },
   filters: {
     locale: {
@@ -95,6 +97,18 @@ export const reducer = (state = initialState, action) => {
         filter: {
           ...state.filter,
           limit: action.payload.limit
+        }
+      };
+    }
+
+    case SET_OFFSET: {
+      const page = action.payload.page
+      return {
+        ...state,
+        filter: {
+          ...state.filter,
+          page,
+          offset: (page * state.filter.limit) - state.filter.limit 
         }
       };
     }

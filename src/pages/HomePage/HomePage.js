@@ -1,24 +1,18 @@
 import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useAsync } from 'react-async'
+import { useFetch } from 'react-async'
 import { useTranslation } from 'react-i18next'
+import { loadFeaturedPlaylists } from '../../core/spotifyApi'
 import { setList, setFilters } from '../../redux/reducers/playlist'
-import { useSpotifyApi } from '../../core/useSpotifyApi'
 import { FiltersContainer, PlayListItemsContainer } from '../../containers'
-
-const loadFilters = async () => {
-  const res = await fetch(process.env.REACT_APP_FILTERS_API)
-  if (!res.ok) throw new Error(res.statusText)
-  return res.json()
-}
 
 const HomePage = () => {
   const mounted = useRef(false)
   const dispatch = useDispatch()
-  const spotifyApi = useSpotifyApi()
   const { t } = useTranslation()
   const filter = useSelector(state => state.playlist.filter)
-  const { data, error, isPending } = useAsync(loadFilters)
+  const accessToken = useSelector(state => state.auth.accessToken)
+  const { data, error, isPending } = useFetch(process.env.REACT_APP_FILTERS_API, { headers: { Accept: "application/json" } })
 
   useEffect(() => {
     mounted.current = true
@@ -28,14 +22,12 @@ const HomePage = () => {
   }, [])
 
   useEffect(() => {
-    if (data && data.filters && data.filters.length > 0) {
-      
+    if (data && data.filters) {
       const newFilter = {}
-      data.filters.forEach((filter) => {
-        newFilter[filter.id] = { ...filter }
-      })
 
-      if (mounted.current) {
+      data.filters.forEach(filter => newFilter[filter.id] = { ...filter })
+
+      if (mounted.current && newFilter) {
         dispatch(setFilters(newFilter))
       }
     }
@@ -44,22 +36,21 @@ const HomePage = () => {
   useEffect(() => {
     const getFeaturedPlaylists = async () => {
       try {
-        const list = await spotifyApi.getFeaturedPlaylists({ ...filter })
+        const { data } = await loadFeaturedPlaylists(accessToken, filter)
         if (mounted.current) {
-          dispatch(setList(list.playlists.items))
+          dispatch(setList(data.playlists.items))
         }
       } catch (error) {
         console.error(error)
       }
     }
-
     getFeaturedPlaylists()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, filter])
 
   return (
     <div>
-      {isPending && <div>{t('home.filters.pending')}</div> }
+      {isPending && <div>{t('home.filters.pending')}</div>}
       {error && <div>{t('home.filters.error')}</div>}
       {!isPending && <FiltersContainer />}
       <PlayListItemsContainer />

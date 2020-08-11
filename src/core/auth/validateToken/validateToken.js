@@ -1,15 +1,10 @@
-import SpotifyWebApi from 'spotify-web-api-js'
-import Q from 'q'
+import { loadMe } from '../../spotifyApi'
 
 const validateToken = async (accessToken) => {
-  const spotifyApi = new SpotifyWebApi()
-  spotifyApi.setAccessToken(accessToken);
-  spotifyApi.setPromiseImplementation(Q)
-
   let validToken = false
 
   try {
-    await spotifyApi.getMe()
+    await loadMe(accessToken)
     validToken = true
   } catch (error) {
     validToken = false
