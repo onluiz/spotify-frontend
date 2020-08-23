@@ -3,13 +3,17 @@ export const SET_FILTERS = 'SET_FILTERS'
 export const SET_FILTER = 'SET_FILTER'
 export const SET_TIMESTAMP = 'SET_TIMESTAMP'
 export const SET_LIMIT = 'SET_LIMIT'
-export const SET_OFFSET = 'SET_OFFSET'
+export const SET_PAGINATION = 'SET_PAGINATION'
 
-export function setList(list = []) {
+export function setList({
+  list = [],
+  total = 0
+}) {
   return {
     type: SET_LIST,
     payload: {
-      list
+      list,
+      total
     }
   }
 }
@@ -56,10 +60,11 @@ export function setLimit(limit) {
   }
 }
 
-export function setOffset(page) {
+export function setPagination(offset = 0, page = 0) {
   return {
-    type: SET_OFFSET,
+    type: SET_PAGINATION,
     payload: {
+      offset,
       page
     }
   }

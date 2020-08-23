@@ -1,67 +1,20 @@
+import { initialState } from './playlist-initial-state'
 import {
   SET_LIST,
   SET_FILTERS,
   SET_FILTER,
   SET_TIMESTAMP,
   SET_LIMIT,
-  SET_OFFSET,
+  SET_PAGINATION,
 } from './playlist-actions'
-
-export const initialState = {
-  list: [],
-  filter: {
-    locale: 'pt_BR',
-    country: 'BR',
-    timestamp: new Date().toISOString(),
-    limit: 5,
-    offset: 0,
-    page: 1,
-  },
-  filters: {
-    locale: {
-      id: '',
-      name: '',
-      values: []
-    },
-    country: {
-      id: '',
-      name: '',
-      values: []
-    },
-    timestamp: {
-      id: '',
-      name: '',
-      validation: {
-        entityType: "DATE_TIME",
-        pattern: "yyyy-MM-dd HH:mm:ss",
-        primitiveType: "STRING",
-      }
-    },
-    limit: {
-      id: '',
-      name: '',
-      validation: {
-        max: 50,
-        min: 1,
-        primitiveType: "INTEGER",
-      }
-    },
-    offset: {
-      id: '',
-      name: '',
-      validation: {
-        primitiveType: "INTEGER",
-      }
-    },
-  }
-};
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_LIST: {
       return {
         ...state,
-        list: [...action.payload.list]
+        list: action.payload.list || [],
+        total: action.payload.total
       };
     }
 
@@ -101,14 +54,13 @@ export const reducer = (state = initialState, action) => {
       };
     }
 
-    case SET_OFFSET: {
-      const page = action.payload.page
+    case SET_PAGINATION: {
       return {
         ...state,
         filter: {
           ...state.filter,
-          page,
-          offset: (page * state.filter.limit) - state.filter.limit 
+          offset: action.payload.offset,
+          page: action.payload.page
         }
       };
     }

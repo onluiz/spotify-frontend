@@ -26,7 +26,8 @@ i18n
             },
             minmax: {
               empty: 'Selecione um item'
-            }
+            },
+            reset: 'Resetar'
           }
         }
       }

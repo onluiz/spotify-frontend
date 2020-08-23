@@ -4,6 +4,7 @@ export {
   setFilter,
   setTimestamp,
   setLimit,
-  setOffset,
+  setPagination,
 } from "./playlist-actions";
-export { initialState, reducer } from "./playlist-reducer";
+export { reducer } from "./playlist-reducer";
+export { initialState } from './playlist-initial-state'
