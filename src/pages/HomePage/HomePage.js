@@ -15,7 +15,6 @@ const HomePage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const filter = useSelector((state) => state.playlist.filter);
-  const list = useSelector(state => state.playlist.list)
   const accessToken = useSelector((state) => state.auth.accessToken);
   const { data, error, isPending } = useFetch(
     process.env.REACT_APP_FILTERS_API,
